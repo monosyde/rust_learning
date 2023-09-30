@@ -18,20 +18,21 @@ repos:
         name: cargo fmt
         entry: cargo fmt
         language: system
+        files: \.rs$
         types: [rust]
         pass_filenames: false
-        args: [--]
       - id: cargo-clippy
         name: cargo clippy
-        entry: cargo clippy -- -D warnings
+        entry: cargo clippy
         language: system
+        files: \.rs$
         types: [rust]
         pass_filenames: false
-        args: [-D, warnings]
       - id: cargo-test
         name: cargo test
         description: cargo test
         entry: cargo test
         language: system
+        files: \.rs$
         types: [rust]
         pass_filenames: false

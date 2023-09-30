@@ -1,5 +1,7 @@
 use std::env;
-use crate::model::Card;
+use serde::{Deserialize, Serialize};
+
+use crate::model::{Card, Member};
 
 pub fn print_struct_bytes(text: &String, start: usize) {
     let str_bytes = &text.as_bytes()[start-20..start+100];
@@ -45,4 +47,47 @@ pub fn get_titles_from_cards(cards: &Vec<Card>) -> Vec<String> {
     }
 
     titles
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Info {
+    pub title: String,
+    pub members: Vec<String>,
+}
+
+pub fn get_info_from_cards(cards: &Vec<Card>) -> Vec<Info> {
+    let mut info_vec: Vec<Info> = vec![];
+    
+    for card in cards {
+        let mut members_vec: Vec<String> = vec![];
+
+        if card.title.is_empty() {
+            continue;
+        }
+
+        let title = card.title.clone();
+
+        if card.members.is_none() {
+            continue;
+        }
+
+        let card_members = card.members.clone().unwrap();
+        for member in &card_members {
+            if member.full_name.is_none() {
+                continue;
+            }
+
+            let full_name = member.full_name.clone().unwrap();
+            members_vec.push(full_name);
+        }
+
+        let info_item = Info {
+            title: title,
+            members: members_vec,
+        };
+
+        info_vec.push(info_item);
+    }
+
+    info_vec
 }

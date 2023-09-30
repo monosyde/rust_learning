@@ -3,7 +3,6 @@
 use serde_json::{self};
 use dotenv::dotenv;
 use std::env;
-use model::Card;
 
 mod model;
 mod kaiten;
@@ -21,5 +20,8 @@ fn main() {
     let filtered_cards = utils::filter_cards_by_member_id(&cards);
     // println!("filtered_cards {:#?}", &filtered_cards);
     let titles = utils::get_titles_from_cards(&filtered_cards);
-    println!("titles {:#?}", &titles);
+    // println!("titles {:#?}", &titles);
+    let info = utils::get_info_from_cards(&filtered_cards);
+    println!("info {:#?}", &info);
+
 }

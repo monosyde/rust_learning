@@ -180,6 +180,7 @@ pub struct Member {
     pub card_id: Option<i64>,
     pub card_subscribed: Option<bool>,
     pub member_type: Option<i32>,
+    pub full_name: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

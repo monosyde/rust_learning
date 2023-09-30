@@ -1,16 +1,21 @@
 
 
 use model::Card;
-use serde::{Serialize, Deserialize};
-use serde_json::{self, Value, Map};
+use serde_json::{self};
 use reqwest::{self, header};
 use dotenv::dotenv;
 use std::env;
 
 mod model;
+// mod utils;
 
 fn filter_cards_by_member_id(cards: &Vec<Card>) -> Vec<Card> {
     let mut filtered_cards: Vec<Card> = vec![];
+    let user_id_str = env::var("USER_ID").unwrap_or_else(|_| String::from("0"));
+    let user_id: i64 = user_id_str.parse().unwrap_or_else(|_| {
+        eprintln!("Не удалось преобразовать USER_ID в i64, используется значение по умолчанию (0)");
+        0
+    });
 
     for card in cards {
         if card.members.is_none() {
@@ -20,7 +25,7 @@ fn filter_cards_by_member_id(cards: &Vec<Card>) -> Vec<Card> {
         let members = card.members.clone().unwrap();
 
         for member in &members {
-            if member.id == 183547 {
+            if member.id == user_id {
                 filtered_cards.push(card.clone())
             }
         }
@@ -29,23 +34,6 @@ fn filter_cards_by_member_id(cards: &Vec<Card>) -> Vec<Card> {
     filtered_cards
 }
 
-fn print_struct_bytes(text: &String, start: usize) {
-    let str_bytes = &text.as_bytes()[start-20..start+100];
-    let cut_str = String::from_utf8(str_bytes.to_vec()).unwrap();
-    println!("cut_str {:?}", cut_str);
-
-    // let result_skip = text.chars().skip(1241);
-    
-    // let mut string_bytes = String::new();
-    // for item in result_skip {
-    //     string_bytes += &item.to_string();
-    //     if string_bytes.len() == 30 {
-    //         break;
-    //     }
-    // }
-
-    // println!("string_bytes {:?}", string_bytes);
-}
 fn main() {
     dotenv().ok();
     let client = reqwest::blocking::Client::new();
@@ -66,6 +54,4 @@ fn main() {
 
     let filtered_cards = filter_cards_by_member_id(&cards);
     println!("filtered_cards {:#?}", &filtered_cards);
-
-    
 }

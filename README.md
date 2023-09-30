@@ -10,6 +10,8 @@
 ##### lint
 `cargo clippy`
 
+##### test
+`cargo test`
 
 ##### docs
 `cargo doc --open`

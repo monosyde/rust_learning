@@ -1,0 +1,40 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.1.0
+    hooks:
+      - id: check-byte-order-marker
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-yaml
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+  - repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+      - id: cargo-check
+  - repo: local
+    hooks:
+      - id: fmt
+        name: nightly fmt
+        entry: cargo +nightly fmt
+        language: system
+        types: [rust]
+        pass_filenames: false
+      - id: cargo-clippy
+        name: cargo clippy
+        entry: cargo clippy -- -D warnings
+        language: system
+        files: \.rs$
+        types: [rust]
+        pass_filenames: false
+      - id: cargo-test
+        name: cargo test
+        description: Run cargo test
+        entry: cargo test
+        language: system
+        types: [rust]
+        pass_filenames: false
+        args: ["--all-features", "--"]

@@ -1,63 +1,71 @@
 
 
+use model::Card;
 use serde::{Serialize, Deserialize};
 use serde_json::{self, Value, Map};
 use reqwest::{self, header};
 use dotenv::dotenv;
 use std::env;
 
+mod model;
 
-fn pretty_print(target: &Value) {
-    let pretty_vec = serde_json::to_string_pretty(&target).unwrap();
-    println!("pretty_vec = {}", &pretty_vec);
+fn filter_cards_by_member_id(cards: &Vec<Card>) -> Vec<Card> {
+    let mut filtered_cards: Vec<Card> = vec![];
+
+    for card in cards {
+        if card.members.is_none() {
+            continue;
+        }
+
+        let members = card.members.clone().unwrap();
+
+        for member in &members {
+            if member.id == 183547 {
+                filtered_cards.push(card.clone())
+            }
+        }
+    }
+
+    filtered_cards
 }
 
-fn get_result(result: Option<i64>) -> i64 {
-    let res = match result {
-        Some(num) => num,
-        None => 0
-    };
+fn print_struct_bytes(text: &String, start: usize) {
+    let str_bytes = &text.as_bytes()[start-20..start+100];
+    let cut_str = String::from_utf8(str_bytes.to_vec()).unwrap();
+    println!("cut_str {:?}", cut_str);
 
-    println!("board id = {}", res);
+    // let result_skip = text.chars().skip(1241);
+    
+    // let mut string_bytes = String::new();
+    // for item in result_skip {
+    //     string_bytes += &item.to_string();
+    //     if string_bytes.len() == 30 {
+    //         break;
+    //     }
+    // }
 
-    res
+    // println!("string_bytes {:?}", string_bytes);
 }
-
 fn main() {
     dotenv().ok();
     let client = reqwest::blocking::Client::new();
 
     let bearer = env::var("HEADER_BEARER").unwrap();
-    let url_get_cards = env::var("URL_GET_BOARDS").unwrap();
+    let url_get_cards = env::var("URL_GET_CARDS").unwrap();
 
     let mut headers = header::HeaderMap::new();
     
     headers.insert(header::AUTHORIZATION, header::HeaderValue::from_str(&bearer).unwrap());
-    println!("headers = {:?}", &headers);
-
     let response = client
         .get(url_get_cards)
         .headers(headers)
         .send().unwrap();
     
     let res_text = &response.text().unwrap();
-    println!("res_text {}", res_text);
-    let des: serde_json::Value = serde_json::from_str(&res_text).unwrap();
-    
-    let vec_json = des.as_array().unwrap();
-    let first_elem = vec_json[0].as_object().unwrap();
+    let cards: Vec<model::Card> = serde_json::from_str(&res_text).unwrap();
 
-    let columns = first_elem.get("columns").unwrap();
-    let f_columns = &columns.as_array().unwrap()[0].as_object();
+    let filtered_cards = filter_cards_by_member_id(&cards);
+    println!("filtered_cards {:#?}", &filtered_cards);
 
-    if f_columns.is_none() {
-        return
-    };
-
-    let board_id = f_columns.unwrap().get("board_id").unwrap();
-
-    let board_id_type = board_id.as_i64();
-
-    get_result(board_id_type);
     
 }

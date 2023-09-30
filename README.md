@@ -13,6 +13,7 @@
 
 ##### lint
 `cargo clippy`
+`cargo clippy -- -D warnings`
 
 ##### test
 `cargo test`
@@ -24,3 +25,8 @@
 `cargo fmt --version`
 `cargo fmt`
 `cargo fmt --all -- --check`
+
+##### pre-commit
+`pre-commit --version`
+`pre-commit install`
+`pre-commit run --all-files`

@@ -1,17 +1,18 @@
-use std::env;
 use serde::{Deserialize, Serialize};
+use std::env;
 
-use crate::model::{Card, Member};
+use crate::model::Card;
 
-pub fn print_struct_bytes(text: &String, start: usize) {
-    let str_bytes = &text.as_bytes()[start-20..start+100];
+pub fn _print_struct_bytes(text: &String, start: usize) {
+    let str_bytes = &text.as_bytes()[start - 20..start + 100];
     let cut_str = String::from_utf8(str_bytes.to_vec()).unwrap();
     println!("cut_str {:?}", cut_str);
 }
 
 pub fn filter_cards_by_member_id(cards: &Vec<Card>) -> Vec<Card> {
     let mut filtered_cards: Vec<Card> = vec![];
-    let user_id_str = env::var("USER_ID").unwrap_or_else(|_| String::from("0"));
+    let user_id_str =
+        env::var("USER_ID").unwrap_or_else(|_| String::from("0"));
     let user_id: i64 = user_id_str.parse().unwrap_or_else(|_| {
         eprintln!("Не удалось преобразовать USER_ID в i64, используется значение по умолчанию 0");
         0
@@ -57,7 +58,7 @@ pub struct Info {
 
 pub fn get_info_from_cards(cards: &Vec<Card>) -> Vec<Info> {
     let mut info_vec: Vec<Info> = vec![];
-    
+
     for card in cards {
         let mut members_vec: Vec<String> = vec![];
 
@@ -65,7 +66,7 @@ pub fn get_info_from_cards(cards: &Vec<Card>) -> Vec<Info> {
             continue;
         }
 
-        let title = card.title.clone();
+        let card_title = card.title.clone();
 
         if card.members.is_none() {
             continue;
@@ -82,7 +83,7 @@ pub fn get_info_from_cards(cards: &Vec<Card>) -> Vec<Info> {
         }
 
         let info_item = Info {
-            title: title,
+            title: card_title,
             members: members_vec,
         };
 

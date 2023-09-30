@@ -6,6 +6,19 @@
 - [ ] добавить wasm 
 - [ ] красиво выводить карточки в интерфейсе
 
+
+##### lint
+`cargo clippy`
+
+
+##### docs
+`cargo doc --open`
+
+##### format
+`cargo fmt --version`
+`cargo fmt`
+`cargo fmt --all -- --check`
+
 ```
 serde_json::Value - работает эффективно
 Но не делает аллокации данных

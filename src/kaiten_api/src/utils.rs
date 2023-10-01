@@ -1,7 +1,9 @@
-use serde::{Deserialize, Serialize};
 use std::env;
+use dotenv::dotenv;
+use serde::{Deserialize, Serialize};
 
-use crate::model::Card;
+use crate::{api, utils, models::Card};
+
 
 pub fn _print_struct_bytes(text: &String, start: usize) {
     let str_bytes = &text.as_bytes()[start - 20..start + 100];
@@ -53,6 +55,12 @@ pub struct Info {
     pub members: Vec<String>,
 }
 
+impl Info {
+    pub fn to_str(&self) -> String {
+        serde_json::to_string(self).unwrap()
+    }
+}
+
 pub fn get_info_from_cards(cards: &Vec<Card>) -> Vec<Info> {
     let mut info_vec: Vec<Info> = vec![];
     for card in cards {
@@ -86,4 +94,31 @@ pub fn get_info_from_cards(cards: &Vec<Card>) -> Vec<Info> {
     }
 
     info_vec
+}
+
+pub async fn get_info() -> Vec<Info> {
+    dotenv().ok();
+    let url_get_cards = env::var("URL_GET_CARDS").unwrap();
+
+    let cards_response = api::get(&url_get_cards).await;
+    let cards_text = &cards_response.text().await.unwrap();
+    let cards: Vec<Card> =
+        serde_json::from_str(cards_text).unwrap();
+
+    let user_id_str =
+        env::var("USER_ID").unwrap_or_else(|_| String::from("0"));
+    let user_id: i64 = user_id_str.parse().unwrap_or_else(|_| {
+        eprintln!("Не удалось преобразовать USER_ID в i64, используется значение по умолчанию 0");
+        0
+    });
+
+    let filtered_cards =
+        utils::filter_cards_by_member_id(&cards, user_id);
+    // println!("filtered_cards {:#?}", &filtered_cards);
+    let _titles = utils::get_titles_from_cards(&filtered_cards);
+    // println!("titles {:#?}", &titles);
+    let info = utils::get_info_from_cards(&filtered_cards);
+    println!("info {:#?}", &info);
+
+    info
 }

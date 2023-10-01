@@ -1,0 +1,26 @@
+[package]
+name = "wasm"
+version = "0.1.0"
+authors = ["Pavel Gavrilov"]
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["console_error_panic_hook"]
+
+[dependencies]
+wasm-bindgen = { version = "0.2.84", features = ["serde-serialize"] }
+kaiten_api = { path = "../kaiten_api"}
+
+console_error_panic_hook = { version = "0.1.7", optional = true }
+wasm-bindgen-futures = "0.4.37"
+reqwest = "0.11.20"
+serde_json = "1.0.107"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.34"
+
+[profile.release]
+opt-level = "s"

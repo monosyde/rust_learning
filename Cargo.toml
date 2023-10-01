@@ -4,8 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-dotenv = "0.15.0"
-httpmock = "0.6.8"
-reqwest = { version = "0.11.20", features = ["blocking"] }
-serde = { version = "1.0.188", features = ["derive"] }
-serde_json = "1.0.107"
+kaiten_api = { path = "./src/kaiten_api"}
+tokio = { version = "1.32.0", features = ["full"] }
+wasm = { path = "./src/wasm"}

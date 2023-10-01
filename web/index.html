@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My WebAssembly App</title>
+</head>
+<body>
+  <script type="module">
+    import init, { greet, get_info } from '../src/wasm/pkg/wasm.js';
+
+    async function run() {
+      await init();
+      greet();
+      get_info();
+    }
+
+    run();
+  </script>
+</body>
+</html>

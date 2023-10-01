@@ -12,6 +12,13 @@
 - [ ] пописать в функциональном стиле
 
 
+##### wasm-pack build
+`cd wasm`
+`wasm-pack build --release --target web`
+
+##### build new library
+`cargo new --lib name_lib`
+
 ##### lint
 `cargo clippy`
 `cargo clippy -- -D warnings`

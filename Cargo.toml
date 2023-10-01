@@ -3,11 +3,7 @@ name = "hello"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-dotenv = "0.15.0"
-reqwest = { version = "0.11.20", features = ["blocking"] }
-serde = { version = "1.0.188", features = ["derive"] }
-serde_json = "1.0.107"
-wasm-pack = "0.12.1"
+kaiten_api = { path = "./src/kaiten_api"}
+tokio = { version = "1.32.0", features = ["full"] }
+wasm = { path = "./src/wasm"}

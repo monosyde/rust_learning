@@ -1,0 +1,54 @@
+edition="2021"
+# unstable_features=true
+max_width=70
+# hard_tabs=false
+tab_spaces=4
+
+newline_style="unix"
+match_block_trailing_comma=true
+
+reorder_imports=true
+# reorder_imported_names=true
+# reorder_imports_in_group=true
+reorder_modules=true
+# reorder_impl_items=true
+# reorder_extern_crates=true
+# reorder_extern_crates_in_group=true
+
+# indent_style="Block"
+# array_layout="Block"
+# fn_args_layout="Block"
+# chain_one_line_max=100
+# format_strings=true
+
+# space_before_colon=false
+# space_after_colon=true
+# spaces_around_ranges=false
+# spaces_within_parens_and_brackets=false
+
+# single_line_if_else_max_width=80
+# where_single_line=false
+# normalize_comments=true
+# chain_indent="Visual"
+# match_arm_blocks=false
+# merge_imports=true
+# comment_width=100
+# error_on_line_overflow=false
+# use_field_init_shorthand=true
+# format_code_in_doc_comments=true
+# wrap_comments=true
+# use_small_heuristics="Default"
+# wrap_match_arms=false
+# type_punctuation_density="Wide"
+# empty_item_single_line=false
+# struct_lit_single_line=false
+# fn_single_line=false
+
+# binop_separator="Back"
+# binop_separator="Front"
+
+# trailing_comma="never"
+# trailing_comma="Vertical"
+
+# imports_granularity="Crate"
+# imports_granularity="Module"

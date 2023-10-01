@@ -17,6 +17,7 @@
 `wasm-pack build --release --target web`
 
 ##### build new library
+`cargo new name_lib`
 `cargo new --lib name_lib`
 
 ##### lint

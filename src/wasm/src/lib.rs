@@ -1,4 +1,5 @@
 use wasm_bindgen::prelude::*;
+use reqwest::Response;
 
 #[wasm_bindgen]
 extern "C" {
@@ -14,6 +15,13 @@ pub fn greet() {
 }
 
 #[wasm_bindgen]
-pub fn get_info() {
+pub async fn get_info() {
     log("get_info");
+    let url = "http://localhost:3030/info";
+    let client = reqwest::Client::new();
+    let cards_response = client.get(url).send().await.unwrap();
+    let cards_text = &cards_response.text().await.unwrap();
+    // let cards =
+    //     serde_json::from_str(cards_text).unwrap();
+    log(cards_text);
 }

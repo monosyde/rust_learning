@@ -36,3 +36,5 @@ repos:
         files: \.rs$
         types: [rust]
         pass_filenames: false
+
+exclude: '\.cargo|\wasm|\target|\.pre-commit-config\.yaml'

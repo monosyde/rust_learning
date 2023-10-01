@@ -9,14 +9,11 @@ pub fn _print_struct_bytes(text: &String, start: usize) {
     println!("cut_str {:?}", cut_str);
 }
 
-pub fn filter_cards_by_member_id(cards: &Vec<Card>) -> Vec<Card> {
+pub fn filter_cards_by_member_id(
+    cards: &Vec<Card>,
+    member_id: i64,
+) -> Vec<Card> {
     let mut filtered_cards: Vec<Card> = vec![];
-    let user_id_str =
-        env::var("USER_ID").unwrap_or_else(|_| String::from("0"));
-    let user_id: i64 = user_id_str.parse().unwrap_or_else(|_| {
-        eprintln!("Не удалось преобразовать USER_ID в i64, используется значение по умолчанию 0");
-        0
-    });
 
     for card in cards {
         if card.members.is_none() {
@@ -26,7 +23,7 @@ pub fn filter_cards_by_member_id(cards: &Vec<Card>) -> Vec<Card> {
         let members = card.members.clone().unwrap();
 
         for member in &members {
-            if member.id == user_id {
+            if member.id == member_id {
                 filtered_cards.push(card.clone())
             }
         }
@@ -58,10 +55,7 @@ pub struct Info {
 
 pub fn get_info_from_cards(cards: &Vec<Card>) -> Vec<Info> {
     let mut info_vec: Vec<Info> = vec![];
-
     for card in cards {
-        let mut members_vec: Vec<String> = vec![];
-
         if card.title.is_empty() {
             continue;
         }
@@ -72,6 +66,7 @@ pub fn get_info_from_cards(cards: &Vec<Card>) -> Vec<Info> {
             continue;
         }
 
+        let mut members_vec: Vec<String> = vec![];
         let card_members = card.members.clone().unwrap();
         for member in &card_members {
             if member.full_name.is_none() {
